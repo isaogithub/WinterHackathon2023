@@ -42,6 +42,7 @@ void CheckHit(void);
 //*****************************************************************************
 // グローバル変数
 //*****************************************************************************
+//static int	g_ViewPortType_Game = TYPE_FULL_SCREEN;
 static int	g_ViewPortType_Game = TYPE_FULL_SCREEN;
 
 static BOOL	g_bPause = TRUE;	// ポーズON/OFF
@@ -248,6 +249,8 @@ void DrawGame0(void)
 
 	// 2Dの物を描画する処理
 	// Z比較なし
+
+	SetViewPort(TYPE_LEFT_THIRD_SCREEN);
 	SetDepthEnable(FALSE);
 
 	// ライティングを無効
@@ -282,7 +285,9 @@ void DrawGame(void)
 #endif
 
 	// プレイヤー視点
-	pos = GetPlayer()->pos;
+	TATE* tate = GetTate();
+
+	pos = tate[0].pos;
 	pos.y = 0.0f;			// カメラ酔いを防ぐためにクリアしている
 	SetCameraAT(pos);
 	SetCamera();
@@ -290,11 +295,12 @@ void DrawGame(void)
 	switch(g_ViewPortType_Game)
 	{
 	case TYPE_FULL_SCREEN:
-		SetViewPort(TYPE_FULL_SCREEN);
+		SetViewPort(TYPE_RIGHT_THIRD_SCREEN);
 		DrawGame0();
 		break;
 
 	case TYPE_LEFT_HALF_SCREEN:
+
 	case TYPE_RIGHT_HALF_SCREEN:
 		SetViewPort(TYPE_LEFT_HALF_SCREEN);
 		DrawGame0();

@@ -266,6 +266,23 @@ void SetViewPort(int type)
 		vp.TopLeftY = (FLOAT)SCREEN_HEIGHT / 2;
 		break;
 
+	case TYPE_LEFT_THIRD_SCREEN:
+		vp.Width = (FLOAT)SCREEN_WIDTH * 0.3f;
+		vp.Height = (FLOAT)SCREEN_HEIGHT;
+		vp.MinDepth = 0.0f;
+		vp.MaxDepth = 1.0f;
+		vp.TopLeftX = 0;
+		vp.TopLeftY = (FLOAT)0.0f;
+		break;
+
+	case TYPE_RIGHT_THIRD_SCREEN:
+		vp.Width = (FLOAT)SCREEN_WIDTH * 0.7f;
+		vp.Height = (FLOAT)SCREEN_HEIGHT;
+		vp.MinDepth = 0.0f;
+		vp.MaxDepth = 1.0f;
+		vp.TopLeftX = (FLOAT)SCREEN_WIDTH * 0.3f;
+		vp.TopLeftY = (FLOAT)0.0f;
+		break;
 
 	}
 	g_ImmediateContext->RSSetViewports(1, &vp);
