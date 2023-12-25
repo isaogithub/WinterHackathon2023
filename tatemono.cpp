@@ -11,6 +11,7 @@
 #include "tatemono.h"
 #include "collision.h"
 #include "input.h"
+#include "ui.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -59,7 +60,7 @@ HRESULT InitTate(void)
 		GetModelDiffuse(&g_Tate[i].model, &g_Tate[i].diffuse[0]);
 
 		
-		g_Tate[i].use = TRUE;
+		g_Tate[i].use = FALSE;
 	}
 	
 	return S_OK;
@@ -87,15 +88,28 @@ void UninitTate(void)
 //=============================================================================
 void UpdateTate(void)
 {
-	// 現段階をカウントする
-	int count = 0;
-	for (int i = 0; i < MAX_TATE; i++)
+	UI* ui = GetUI();
+	if (ui[UI_WOOD].count == 0 &&
+		ui[UI_METAL].count == 0 &&
+		ui[UI_CONCRETE].count == 0)
 	{
-		if (g_Tate[i].use)
+		int tempLevel = 0;
+		for (int i = 0; i < MAX_TATE; i++)
 		{
-			count++;
+			if (!g_Tate[i].use)
+			{
+				g_Tate[i].use = TRUE;
+				SetMaterialReset();
+
+				tempLevel++;
+				break;
+			}
 		}
+
+		g_Level = tempLevel;
+		if (g_Level == 4)g_Level = 3;
 	}
+
 
 	for (int i = 0; i < MAX_TATE; i++)
 	{
@@ -107,8 +121,6 @@ void UpdateTate(void)
 			}
 		}
 	}
-
-	g_Level = count;
 #ifdef _DEBUG
 
 #endif

@@ -100,15 +100,15 @@ HRESULT InitUI(void)
 	float base = 700.0f;
 	float space = 70.0f;
 	g_UI[UI_WOOD].pos = XMFLOAT3(base + space * UI_WOOD, space, 0.0f);
-	g_UI[UI_WOOD].count = 10;
+	g_UI[UI_WOOD].count = MATERIAL_COUNT;
 	g_UI[UI_WOOD].use = TRUE;
 
 	g_UI[UI_METAL].pos = XMFLOAT3(base + space * UI_METAL, space, 0.0f);
-	g_UI[UI_METAL].count = 10;
+	g_UI[UI_METAL].count = MATERIAL_COUNT;
 	g_UI[UI_METAL].use = TRUE;
 
 	g_UI[UI_CONCRETE].pos = XMFLOAT3(base + space * UI_CONCRETE, space, 0.0f);
-	g_UI[UI_CONCRETE].count = 10;
+	g_UI[UI_CONCRETE].count = MATERIAL_COUNT;
 	g_UI[UI_CONCRETE].use = TRUE;
 
 	g_UI[UI_LIFE].pos = XMFLOAT3(base + space * UI_LIFE, space, 0.0f);
@@ -164,6 +164,7 @@ void UpdateUI(void)
 //=============================================================================
 void DrawUI(void)
 {
+	if (GetMode() != MODE_GAME)return;
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3D);
 	UINT offset = 0;
@@ -258,6 +259,11 @@ UI * GetUI(void)
 
 void AddWood(int add)
 {
+	g_UI[UI_WOOD].count+=add;
+	if (g_UI[UI_WOOD].count <= 0)
+	{
+		g_UI[UI_WOOD].count = 0;
+	}
 
 }
 void GetWood()
@@ -271,6 +277,11 @@ void GetWood()
 
 void AddMetal(int add)
 {
+	g_UI[UI_METAL].count += add;
+	if (g_UI[UI_METAL].count <= 0)
+	{
+		g_UI[UI_METAL].count = 0;
+	}
 
 }
 void GetMetal(int add)
@@ -284,9 +295,21 @@ void GetMetal(int add)
 
 void AddConcrete(int add)
 {
-
+	g_UI[UI_CONCRETE].count += add;
+	if (g_UI[UI_CONCRETE].count <= 0)
+	{
+		g_UI[UI_CONCRETE].count = 0;
+	}
 }
 void GetConcrete(int add)
 {
 
+}
+
+
+void SetMaterialReset(void)
+{
+	g_UI[UI_WOOD].count = MATERIAL_COUNT;
+	g_UI[UI_METAL].count = MATERIAL_COUNT;
+	g_UI[UI_CONCRETE].count = MATERIAL_COUNT;
 }

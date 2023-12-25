@@ -12,7 +12,7 @@
 // マクロ定義
 //*****************************************************************************
 #define UI_DIGIT			(2)			// 桁数
-
+#define MATERIAL_COUNT		(10)
 
 //*****************************************************************************
 // UI構造体
@@ -56,3 +56,5 @@ void GetMetal(int add);
 void AddConcrete(int add);
 void GetConcrete(int add);
 
+UI* GetUI(void);
+void SetMaterialReset(void);

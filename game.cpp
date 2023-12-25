@@ -275,8 +275,6 @@ void DrawGame0(void)
 
 void DrawGame(void)
 {
-	XMFLOAT3 pos;
-
 
 #ifdef _DEBUG
 	// デバッグ表示
@@ -286,9 +284,8 @@ void DrawGame(void)
 
 	// プレイヤー視点
 	TATE* tate = GetTate();
+	XMFLOAT3 pos = tate[GetLevel()].pos;
 
-	pos = tate[0].pos;
-	pos.y = 0.0f;			// カメラ酔いを防ぐためにクリアしている
 	SetCameraAT(pos);
 	SetCamera();
 

@@ -197,31 +197,31 @@ void UpdatePlayer(void)
 
 	g_Player.spd *= 0.7f;
 
-	// à⁄ìÆèàóù
-	if (GetKeyboardPress(DIK_LEFT))
-	{
-		g_Player.spd = VALUE_MOVE;
-		//g_Player.pos.x -= g_Player.spd;
-		roty = XM_PI / 2;
-	}
-	if (GetKeyboardPress(DIK_RIGHT))
-	{
-		g_Player.spd = VALUE_MOVE;
-		//g_Player.pos.x += g_Player.spd;
-		roty = -XM_PI / 2;
-	}
-	if (GetKeyboardPress(DIK_UP))
-	{
-		g_Player.spd = VALUE_MOVE;
-		//g_Player.pos.z += g_Player.spd;
-		roty = XM_PI;
-	}
-	if (GetKeyboardPress(DIK_DOWN))
-	{
-		g_Player.spd = VALUE_MOVE;
-		//g_Player.pos.z -= g_Player.spd;
-		roty = 0.0f;
-	}
+	//// à⁄ìÆèàóù
+	//if (GetKeyboardPress(DIK_LEFT))
+	//{
+	//	g_Player.spd = VALUE_MOVE;
+	//	//g_Player.pos.x -= g_Player.spd;
+	//	roty = XM_PI / 2;
+	//}
+	//if (GetKeyboardPress(DIK_RIGHT))
+	//{
+	//	g_Player.spd = VALUE_MOVE;
+	//	//g_Player.pos.x += g_Player.spd;
+	//	roty = -XM_PI / 2;
+	//}
+	//if (GetKeyboardPress(DIK_UP))
+	//{
+	//	g_Player.spd = VALUE_MOVE;
+	//	//g_Player.pos.z += g_Player.spd;
+	//	roty = XM_PI;
+	//}
+	//if (GetKeyboardPress(DIK_DOWN))
+	//{
+	//	g_Player.spd = VALUE_MOVE;
+	//	//g_Player.pos.z -= g_Player.spd;
+	//	roty = 0.0f;
+	//}
 
 #ifdef _DEBUG
 	if (GetKeyboardPress(DIK_R))

@@ -1,17 +1,14 @@
 //=============================================================================
 //
 // リザルト画面処理 [result.cpp]
-// Author : 
+// Author : GP11B132 16 SHEN ZHENTU
 //
 //=============================================================================
-#include "main.h"
-#include "renderer.h"
 #include "result.h"
 #include "input.h"
-#include "fade.h"
-#include "sound.h"
-#include "sprite.h"
 #include "score.h"
+#include "fade.h"
+#include "camera.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -22,6 +19,11 @@
 
 #define TEXTURE_WIDTH_LOGO			(480)			// ロゴサイズ
 #define TEXTURE_HEIGHT_LOGO			(80)			// 
+
+#define TEXTURE_WIDTH_MAN			(210)			// 人のサイズ
+#define TEXTURE_HEIGHT_MAN			(356)			// 
+
+
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -35,9 +37,9 @@ static ID3D11Buffer				*g_VertexBuffer = NULL;		// 頂点情報
 static ID3D11ShaderResourceView	*g_Texture[TEXTURE_MAX] = { NULL };	// テクスチャ情報
 
 static char *g_TexturName[TEXTURE_MAX] = {
-	"data/TEXTURE/bg001.jpg",
-	"data/TEXTURE/result_logo.png",
-	"data/TEXTURE/number16x32.png",
+	"data/TEXTURE/GameClearBkg.png",
+	"data/TEXTURE/GameClear.png",
+	"data/TEXTURE/GameClearMan.png",
 };
 
 
@@ -86,7 +88,7 @@ HRESULT InitResult(void)
 	g_TexNo = 0;
 
 	// BGM再生
-	PlaySound(SOUND_LABEL_BGM_sample002);
+
 
 	g_Load = TRUE;
 	return S_OK;
@@ -125,16 +127,26 @@ void UpdateResult(void)
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{// Enter押したら、ステージを切り替える
+
+		//カメラの設定をしなおす
+
+
+
 		SetFade(FADE_OUT, MODE_TITLE);
+		//SetMode(MODE_TITLE);
 	}
 	// ゲームパッドで入力処理
 	else if (IsButtonTriggered(0, BUTTON_START))
 	{
 		SetFade(FADE_OUT, MODE_TITLE);
+		//SetMode(MODE_TITLE);
+
 	}
 	else if (IsButtonTriggered(0, BUTTON_B))
 	{
 		SetFade(FADE_OUT, MODE_TITLE);
+		//SetMode(MODE_TITLE);
+
 	}
 
 
@@ -166,6 +178,16 @@ void DrawResult(void)
 	material.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	SetMaterial(material);
 
+	SetViewPort(TYPE_FULL_SCREEN);
+
+	// Z比較なし
+	SetDepthEnable(FALSE);
+
+	// ライティングを無効
+	SetLightEnable(FALSE);
+
+
+
 	// リザルトの背景を描画
 	{
 		// テクスチャ設定
@@ -180,6 +202,7 @@ void DrawResult(void)
 
 	// リザルトのロゴを描画
 	{
+
 		// テクスチャ設定
 		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[1]);
 
@@ -190,43 +213,27 @@ void DrawResult(void)
 		GetDeviceContext()->Draw(4, 0);
 	}
 
-
-	// スコア表示
+	// リザルトの大工を描画
 	{
+
 		// テクスチャ設定
 		GetDeviceContext()->PSSetShaderResources(0, 1, &g_Texture[2]);
+		
+		// １枚のポリゴンの頂点とテクスチャ座標を設定
+		SetSprite(g_VertexBuffer, 700.0f, 350.0f, TEXTURE_WIDTH_MAN, TEXTURE_HEIGHT_MAN, 0.0f, 0.0f, 1.0f, 1.0f);
 
-		// 桁数分処理する
-		int number = GetScore();
-		for (int i = 0; i < SCORE_DIGIT; i++)
-		{
-			// 今回表示する桁の数字
-			float x = (float)(number % 10);
-
-			// スコアの位置やテクスチャー座標を反映
-			float pw = 16*4;			// スコアの表示幅
-			float ph = 32*4;			// スコアの表示高さ
-			float px = 600.0f - i*pw;	// スコアの表示位置X
-			float py = 300.0f;			// スコアの表示位置Y
-
-			float tw = 1.0f / 10;		// テクスチャの幅
-			float th = 1.0f / 1;		// テクスチャの高さ
-			float tx = x * tw;			// テクスチャの左上X座標
-			float ty = 0.0f;			// テクスチャの左上Y座標
-
-			// １枚のポリゴンの頂点とテクスチャ座標を設定
-			SetSpriteColor(g_VertexBuffer, px, py, pw, ph, tx, ty, tw, th,
-				XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
-
-			// ポリゴン描画
-			GetDeviceContext()->Draw(4, 0);
-
-			// 次の桁へ
-			number /= 10;
-		}
-
+		// ポリゴン描画
+		GetDeviceContext()->Draw(4, 0);
 	}
 
+
+
+
+	// ライティングを有効に
+	SetLightEnable(TRUE);
+
+	// Z比較あり
+	SetDepthEnable(TRUE);
 
 
 }

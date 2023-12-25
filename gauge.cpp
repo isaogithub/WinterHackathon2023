@@ -13,6 +13,7 @@
 #include "gauge.h"
 #include "element.h"
 #include "debugproc.h"
+#include "ui.h"
 
 //*****************************************************************************
 // É}ÉNÉçíËã`
@@ -217,12 +218,15 @@ void UpdateGauge(void)
 		{
 		case WOOD:
 			PlaySound(SOUND_LABEL_SE_bomb000);
+			AddWood(-1);
 			break;
 		case METAL:
 			PlaySound(SOUND_LABEL_SE_bomb000);
+			AddMetal(-1);
 			break;
 		case CONCRETE:
 			PlaySound(SOUND_LABEL_SE_bomb000);
+			AddConcrete(-1);
 			break;
 		}
 		DeleteElement(elementNo);
