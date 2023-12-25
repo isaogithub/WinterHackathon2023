@@ -26,7 +26,7 @@ static LIGHT	g_Light[LIGHT_MAX];
 
 static FOG		g_Fog;
 
-static BOOL		g_FogEnable = TRUE;
+static BOOL		g_FogEnable = FALSE;
 
 
 //=============================================================================

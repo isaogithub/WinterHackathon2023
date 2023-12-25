@@ -12,7 +12,6 @@
 #include "input.h"
 #include "sound.h"
 #include "fade.h"
-
 #include "player.h"
 #include "enemy.h"
 #include "meshfield.h"
@@ -21,10 +20,12 @@
 #include "tree.h"
 #include "bullet.h"
 #include "score.h"
+#include "element.h"
 #include "particle.h"
 #include "collision.h"
 #include "debugproc.h"
-
+#include "tatemono.h"
+#include "gauge.h"
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
@@ -56,6 +57,7 @@ HRESULT InitGame(void)
 	// フィールドの初期化
 	InitMeshField(XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), 100, 100, 13.0f, 13.0f);
 
+	InitTate();
 	// ライトを有効化	// 影の初期化処理
 	InitShadow();
 
@@ -91,11 +93,15 @@ HRESULT InitGame(void)
 	// 弾の初期化
 	InitBullet();
 
-	// スコアの初期化
-	InitScore();
-
 	// パーティクルの初期化
 	InitParticle();
+
+	//////////////////2Dの初期化処理///////////////////////
+	// スコアの初期化
+	InitScore();
+	InitElement();
+	InitGauge();
+
 
 	// BGM再生
 	PlaySound(SOUND_LABEL_BGM_sample001);
@@ -114,6 +120,11 @@ void UninitGame(void)
 	// スコアの終了処理
 	UninitScore();
 
+	//エレメントの終了処理
+	UninitElement();
+	
+	UninitGauge();
+
 	// 弾の終了処理
 	UninitBullet();
 
@@ -125,6 +136,8 @@ void UninitGame(void)
 
 	// 地面の終了処理
 	UninitMeshField();
+
+	UninitTate();
 
 	// エネミーの終了処理
 	UninitEnemy();
@@ -163,6 +176,9 @@ void UpdateGame(void)
 	// 地面処理の更新
 	UpdateMeshField();
 
+	//建物
+	UpdateTate();
+
 	// プレイヤーの更新処理
 	UpdatePlayer();
 
@@ -189,6 +205,12 @@ void UpdateGame(void)
 
 	// スコアの更新処理
 	UpdateScore();
+
+	UpdateGauge();
+
+	//エレメントの更新処理
+	UpdateElement();
+
 }
 
 //=============================================================================
@@ -200,14 +222,16 @@ void DrawGame0(void)
 	// 地面の描画処理
 	DrawMeshField();
 
+	DrawTate();
+
 	// 影の描画処理
-	DrawShadow();
+	//DrawShadow();
 
-	// エネミーの描画処理
-	DrawEnemy();
+	//// エネミーの描画処理
+	//DrawEnemy();
 
-	// プレイヤーの描画処理
-	DrawPlayer();
+	//// プレイヤーの描画処理
+	//DrawPlayer();
 
 	// 弾の描画処理
 	DrawBullet();
@@ -215,11 +239,11 @@ void DrawGame0(void)
 	// 壁の描画処理
 	DrawMeshWall();
 
-	// 木の描画処理
-	DrawTree();
+	//// 木の描画処理
+	//DrawTree();
 
-	// パーティクルの描画処理
-	DrawParticle();
+	//// パーティクルの描画処理
+	//DrawParticle();
 
 
 	// 2Dの物を描画する処理
@@ -231,6 +255,11 @@ void DrawGame0(void)
 
 	// スコアの描画処理
 	DrawScore();
+
+	DrawGauge();
+
+	//エレメントの描画処理
+	DrawElement();
 
 
 	// ライティングを有効に

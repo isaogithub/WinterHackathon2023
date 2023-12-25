@@ -18,7 +18,9 @@
 #include "title.h"
 #include "result.h"
 #include "debugproc.h"
-
+#include "element.h"
+#include "ui.h"
+#include "tatemono.h"
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
@@ -296,6 +298,7 @@ void Update(void)
 	// カメラ更新
 	UpdateCamera();
 
+	UpdateUI();
 	// モードによって処理を分ける
 	switch (g_Mode)
 	{
@@ -386,6 +389,9 @@ void Draw(void)
 		// ライティングを無効
 		SetLightEnable(FALSE);
 
+		//UI描画処理
+		DrawUI();
+
 		// フェード描画
 		DrawFade();
 
@@ -443,6 +449,7 @@ void SetMode(int mode)
 	// リザルト画面の終了処理
 	UninitResult();
 
+	UninitUI();
 
 	g_Mode = mode;	// 次のモードをセットしている
 
@@ -470,11 +477,12 @@ void SetMode(int mode)
 	case MODE_MAX:
 		// エネミーの終了処理
 		UninitEnemy();
-		
 		// プレイヤーの終了処理
 		UninitPlayer();
 		break;
 	}
+
+	InitUI();
 }
 
 //=============================================================================
